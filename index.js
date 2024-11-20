@@ -4,41 +4,42 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-// Middleware
+
 app.use(express.json());
 
 // Middleware importları
-const authenticateToken = require('./middleware/tokenMiddleware'); // Token doğrulama middleware'i
-const checkBlacklist = require('./middleware/checkBlacklist'); // Blacklist kontrol middleware'i
+const authenticateToken = require('./middleware/tokenMiddleware'); // Token doğrulama 
+const checkBlacklist = require('./middleware/checkBlacklist'); // Blacklist kontrol 
 
-// Formlar rotalarını ekleyelim
-const formaRoutes = require("./routes/formalar/index"); // formalar klasöründeki index.js'i yükle
-app.use("/formalar", formaRoutes); // /formalar endpointini ekliyoruz
 
-// Koruma ekleyerek gruplar rotası
+const formaRoutes = require("./routes/formalar/index"); 
+app.use("/formalar", authenticateToken,checkBlacklist,formaRoutes); 
+
+
 const grupRoutes = require("./routes/gruplar/index");
-app.use("/gruplar", authenticateToken, checkBlacklist, grupRoutes); // Token kontrolü ekleyin
+app.use("/gruplar", authenticateToken, checkBlacklist, grupRoutes); 
 
-// Koruma ekleyerek roller rotası
+
 const rollerRoutes = require("./routes/roller/index");
-app.use("/roller", authenticateToken, checkBlacklist, rollerRoutes); // Token kontrolü ekleyin
+app.use("/roller", authenticateToken, checkBlacklist, rollerRoutes); 
 
-// Koruma ekleyerek kullanıcılar rotası
+
 const kullanicilarRoutes = require("./routes/kullanicilar/index");
-app.use("/kullanicilar", authenticateToken, checkBlacklist, kullanicilarRoutes); // Token kontrolü ekleyin
+app.use("/kullanicilar", authenticateToken, checkBlacklist, kullanicilarRoutes); 
 
-// Diğer rotalar için koruma ekleyebilirsiniz
+
 const yoklamaRoutes = require("./routes/yoklamalar/index");
-app.use("/yoklamalar", authenticateToken, checkBlacklist, yoklamaRoutes); // Token kontrolü ekleyin
+app.use("/yoklamalar", authenticateToken, checkBlacklist, yoklamaRoutes); 
+
 
 const aidatlarRoutes = require("./routes/aidatlar/index");
-app.use("/aidatlar", authenticateToken, checkBlacklist, aidatlarRoutes); // Token kontrolü ekleyin
+app.use("/aidatlar", authenticateToken, checkBlacklist, aidatlarRoutes); 
 
 const uyelerRoutes = require("./routes/uyeler/index");
-app.use("/uyeler", authenticateToken, checkBlacklist, uyelerRoutes); // Token kontrolü ekleyin
+app.use("/uyeler", authenticateToken, checkBlacklist, uyelerRoutes); 
 
 const formaStokRoutes = require("./routes/formaStok/index");
-app.use("/formaStok", authenticateToken, checkBlacklist, formaStokRoutes); // Token kontrolü ekleyin
+app.use("/formaStok", authenticateToken, checkBlacklist, formaStokRoutes); 
 
 const loginRouter = require("./routes/loginIslemleri/index");
 app.use("/login", loginRouter);

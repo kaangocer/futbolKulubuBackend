@@ -4,11 +4,11 @@
  */
 exports.up = function (knex) {
     return knex.schema.createTable("FormaStok", (table) => {
-      table.increments("StokId").primary(); // Otomatik artan ID
-      table.integer("FormaId").unsigned().references("FormaId").inTable("Formalar"); // Formalar tablosuyla ilişki
-      table.integer("ToplamAdet").notNullable(); // Toplam adet
-      table.integer("TeslimEdilen").notNullable(); // Teslim edilen
-      table.integer("KalanAdet").notNullable(); // Kalan adet
+      table.increments("StokId").primary(); 
+      table.integer("FormaId").unsigned().references("FormaId").inTable("Formalar"); 
+      table.integer("ToplamAdet").notNullable(); 
+      table.integer("TeslimEdilen").notNullable(); 
+      table.integer("KalanAdet").notNullable(); 
     });
   };
   
@@ -17,6 +17,6 @@ exports.up = function (knex) {
    * @returns { Promise<void> }
    */
   exports.down = function (knex) {
-    return knex.schema.dropTableIfExists("FormaStok"); // Geri alma işlemi
+    return knex.schema.dropTableIfExists("FormaStok"); 
   };
   

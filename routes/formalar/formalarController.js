@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const formalarService = require('./formalarService');
 
-// Yeni bir forma eklemek için endpoint
+// Eklemek
 router.post('/', async (req, res) => {
   try {
     const yeniForma = await formalarService.createForma(req.body);
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 module.exports = router;
 
 
-// Belirli bir forma kaydını güncellemek için endpoint
+// Güncelleme
 router.put('/:FormaId', async (req, res) => {
   try {
     const { FormaId } = req.params;
@@ -32,7 +32,7 @@ router.put('/:FormaId', async (req, res) => {
 });
 
 
-// Belirli bir forma kaydını silmek için endpoint
+// Silme
 router.delete('/:FormaId', async (req, res) => {
   try {
     const { FormaId } = req.params;
@@ -46,7 +46,7 @@ router.delete('/:FormaId', async (req, res) => {
 
 
 
-// Tüm formaları listelemek için endpoint
+// Hepsini listele
 router.get('/', async (req, res) => {
   try {
     const formalar = await formalarService.getAllFormalar();
@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
 });
 
 
-// Belirli bir üyeye ait formaları listelemek için endpoint
+// Belirli listele
 router.get('/uye/:UyeId', async (req, res) => {
   try {
     const { UyeId } = req.params;

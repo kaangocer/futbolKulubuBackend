@@ -4,7 +4,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-// Yeni bir üye eklemek
+// Yeni bir üye ekleme
 async function createUye(uyeData) {
     try {
         const { KullaniciId, GrupId, TcNo, Ad, SoyAd, TelNo, DogumYili, AnneAdi, BabaAdi, AnneTelNo, BabaTelNo, Adres } = uyeData;
@@ -33,7 +33,7 @@ async function createUye(uyeData) {
     }
 }
 
-// Tüm üyeleri görüntülemek
+// Tüm üyeleri görüntüleme
 async function getAllUyeler() {
     try {
         return await db('Uyeler').select('*');
@@ -43,7 +43,7 @@ async function getAllUyeler() {
     }
 }
 
-// Belirli bir üyeyi görüntülemek
+// Belirli bir üyeyi görüntüleme
 async function getUyeById(UyeId) {
     try {
         const uye = await db('Uyeler').where({ UyeId }).first();
@@ -78,7 +78,7 @@ async function updateUye(UyeId, uyeData) {
     }
 }
 
-// Üyeyi silmek
+// Üyeyi silme
 async function deleteUye(UyeId) {
     try {
         const silinenKayit = await db('Uyeler')

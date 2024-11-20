@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const uyelerService = require('./uyelerService');
 
-// Yeni bir üye eklemek için endpoint
+// Yeni bir üye ekleme
 router.post('/', async (req, res) => {
     try {
         const yeniUye = await uyelerService.createUye(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Tüm üyeleri görüntülemek için endpoint
+// Tüm üyeleri görüntüleme
 router.get('/', async (req, res) => {
     try {
         const uyeler = await uyelerService.getAllUyeler();
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Belirli bir üyeyi görüntülemek için endpoint
+// Belirli bir üyeyi görüntüleme
 router.get('/:UyeId', async (req, res) => {
     try {
         const { UyeId } = req.params;
@@ -35,7 +35,7 @@ router.get('/:UyeId', async (req, res) => {
     }
 });
 
-// Bir üyeyi güncellemek için endpoint
+// Bir üyeyi güncelleme
 router.put('/:UyeId', async (req, res) => {
     try {
         const { UyeId } = req.params;
@@ -46,7 +46,7 @@ router.put('/:UyeId', async (req, res) => {
     }
 });
 
-// Bir üyeyi silmek için endpoint
+// Bir üyeyi silme
 router.delete('/:UyeId', async (req, res) => {
     try {
         const { UyeId } = req.params;

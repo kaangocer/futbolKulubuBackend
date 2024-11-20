@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const gruplarService = require('./gruplarService');
 
-// Yeni bir grup eklemek için endpoint
+// Yeni bir grup ekle
 router.post('/', async (req, res) => {
   try {
     const yeniGrup = await gruplarService.createGrup(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Bir grubu silmek için endpoint
+// Bir grubu sil
 router.delete('/:grupId', async (req, res) => {
   const grupId = parseInt(req.params.grupId, 10); // grupId'yi integer formatına çeviriyoruz
   try {

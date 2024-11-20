@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // JWT modülünü ekledik
+const jwt = require('jsonwebtoken'); 
 const knex = require('knex')(require('../../knexfile').development);
-require('dotenv').config(); // .env dosyasını yükleyin
+require('dotenv').config(); // .env dosyası
 
-// Giriş işlemi için endpoint
+// Giriş işlemi
 router.post('/', async (req, res) => {
     const { Email, Password } = req.body;
 

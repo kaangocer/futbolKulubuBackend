@@ -1,12 +1,12 @@
 // routes/logoutIslemleri/logoutService.js
 const jwt = require('jsonwebtoken');
-const knex = require('knex')(require('../../knexfile').development); // Knex ile veritabanına bağlan
+const knex = require('knex')(require('../../knexfile').development);
 require('dotenv').config();
 
-// Çıkış yapmak için fonksiyon
+// Çıkış yapma
 async function logoutUser(token) {
     try {
-        // Token'ı geçersiz kılmak için, blacklisting (kara listeye alma) yöntemi kullanılacak.
+        // Token'ı geçersiz kılmak için, blacklisting yöntemi kullanılacak.
         if (!token) {
             throw new Error('Geçersiz token.');
         }

@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const rollerService = require('./rollerService');
 
-// Yeni bir rol eklemek için endpoint
+// Yeni bir rol ekleme
 router.post('/', async (req, res) => {
   try {
     const yeniRol = await rollerService.createRole(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Belirli bir rol kaydını silmek için endpoint
+// Belirli bir rol kaydını silme
 router.delete('/:RolId', async (req, res) => {
   try {
     const { RolId } = req.params;

@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const formaStokService = require('./formaStokService');
 
-// Yeni forma stok eklemek için endpoint
+// Yeni forma ekle
 router.post('/', async (req, res) => {
     try {
         const yeniFormaStok = await formaStokService.createFormaStok(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Tüm forma stoklarını görüntülemek için endpoint
+// Tüm formaları görüntüle
 router.get('/', async (req, res) => {
     try {
         const stoklar = await formaStokService.getAllFormaStok();
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Belirli bir forma stokunu görüntülemek için endpoint
+// Belirli bir forma görüntüle
 router.get('/:StokId', async (req, res) => {
     try {
         const { StokId } = req.params;
@@ -35,7 +35,7 @@ router.get('/:StokId', async (req, res) => {
     }
 });
 
-// Bir forma stokunu güncellemek için endpoint
+// Bir forma güncelle
 router.put('/:StokId', async (req, res) => {
     try {
         const { StokId } = req.params;
@@ -46,7 +46,7 @@ router.put('/:StokId', async (req, res) => {
     }
 });
 
-// Bir forma stokunu silmek için endpoint
+// Sil
 router.delete('/:StokId', async (req, res) => {
     try {
         const { StokId } = req.params;

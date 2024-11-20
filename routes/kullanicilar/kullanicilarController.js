@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const kullanicilarService = require('./kullanicilarService');
 
-// Yeni bir kullanıcı eklemek için endpoint
+// Yeni bir kullanıcı ekle
 router.post('/', async (req, res) => {
   try {
     const yeniKullanici = await kullanicilarService.createUser(req.body);
@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Tüm kullanıcıları görüntülemek için endpoint
+// Tüm kullanıcıları görüntüleme
 router.get('/', async (req, res) => {
   try {
     const kullanicilar = await kullanicilarService.getUsers();
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Belirli bir kullanıcıyı görüntülemek için endpoint
+// Belirli bir kullanıcıyı görüntüle
 router.get('/:KullaniciId', async (req, res) => {
   try {
     const { KullaniciId } = req.params;
@@ -33,7 +33,7 @@ router.get('/:KullaniciId', async (req, res) => {
   }
 });
 
-// Belirli bir kullanıcıyı güncellemek için endpoint
+// Belirli bir kullanıcıyı güncelleme
 router.put('/:KullaniciId', async (req, res) => {
   try {
     const { KullaniciId } = req.params;
@@ -44,7 +44,7 @@ router.put('/:KullaniciId', async (req, res) => {
   }
 });
 
-// Belirli bir kullanıcıyı silmek için endpoint
+// Belirli bir kullanıcıyı sil
 router.delete('/:KullaniciId', async (req, res) => {
   try {
     const { KullaniciId } = req.params;

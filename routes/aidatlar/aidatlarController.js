@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const aidatlarService = require('./aidatlarService');
 
-// Yeni bir aidat eklemek için endpoint
+// Tüm aidatları görüntüleme
 router.post('/', async (req, res) => {
     try {
         const yeniAidat = await aidatlarService.createAidat(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Tüm aidatları görüntülemek için endpoint
+// Tüm aidat görüntüleme
 router.get('/', async (req, res) => {
     try {
         const aidatlar = await aidatlarService.getAllAidat();
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Belirli bir aidatı görüntülemek için endpoint
+// Id'ye göre görüntüleme
 router.get('/:AidatId', async (req, res) => {
     try {
         const { AidatId } = req.params;
@@ -35,7 +35,7 @@ router.get('/:AidatId', async (req, res) => {
     }
 });
 
-// Bir aidatı güncellemek için endpoint
+// Güncelleme İşlemi
 router.put('/:AidatId', async (req, res) => {
     try {
         const { AidatId } = req.params;
@@ -46,7 +46,7 @@ router.put('/:AidatId', async (req, res) => {
     }
 });
 
-// Bir aidatı silmek için endpoint
+// Silme İşlemi
 router.delete('/:AidatId', async (req, res) => {
     try {
         const { AidatId } = req.params;

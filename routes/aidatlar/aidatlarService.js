@@ -4,7 +4,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-// Yeni bir aidat eklemek
+// Ekleme
 async function createAidat(aidatData) {
     try {
         const { UyeId, Yil, Ay, Miktar, Durum, OdemeTarihi } = aidatData;
@@ -27,7 +27,7 @@ async function createAidat(aidatData) {
     }
 }
 
-// Tüm aidatları görüntülemek
+// Tüm aidatları görüntüleme
 async function getAllAidat() {
     try {
         return await db('Aidat').select('*');
@@ -37,7 +37,7 @@ async function getAllAidat() {
     }
 }
 
-// Belirli bir aidatı görüntülemek
+// Belirli bir aidatı görüntüleme
 async function getAidatById(AidatId) {
     try {
         const aidat = await db('Aidat').where({ AidatId }).first();
@@ -53,7 +53,7 @@ async function getAidatById(AidatId) {
     }
 }
 
-// Aidatı güncellemek
+// Güncelleme
 async function updateAidat(AidatId, aidatData) {
     try {
         const updatedAidat = await db('Aidat')
@@ -72,7 +72,7 @@ async function updateAidat(AidatId, aidatData) {
     }
 }
 
-// Aidatı silmek
+// Aidatı silme
 async function deleteAidat(AidatId) {
     try {
         const silinenKayit = await db('Aidat')

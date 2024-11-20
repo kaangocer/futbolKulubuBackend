@@ -1,9 +1,9 @@
 // routes/logoutIslemleri/logoutController.js
 const express = require('express');
 const router = express.Router();
-const logoutService = require('./logoutService'); // Logout service'i ekle
+const logoutService = require('./logoutService'); 
 
-// Çıkış işlemi için endpoint
+// Çıkış işlemi
 router.post('/', async (req, res) => {
     const token = req.headers['authorization']?.split(' ')[1]; // Bearer token al
 

@@ -4,9 +4,9 @@
  */
 exports.up = function (knex) {
     return knex.schema.createTable("Gruplar", (table) => {
-      table.increments("GrupId").primary(); // Otomatik artan ID
-      table.string("GrupAdi").notNullable(); // Grup adı
-      table.string("GrupTipi"); // Grup tipi
+      table.increments("GrupId").primary(); 
+      table.string("GrupAdi").notNullable();
+      table.string("GrupTipi"); 
     });
   };
   
@@ -15,6 +15,6 @@ exports.up = function (knex) {
    * @returns { Promise<void> }
    */
   exports.down = function (knex) {
-    return knex.schema.dropTableIfExists("Gruplar"); // Geri alma işlemi
+    return knex.schema.dropTableIfExists("Gruplar"); 
   };
   

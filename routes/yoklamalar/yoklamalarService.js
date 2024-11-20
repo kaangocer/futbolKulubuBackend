@@ -4,7 +4,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-// Yeni bir yoklama eklemek
+// Yeni bir yoklama ekleme
 async function createYoklama(yoklamaData) {
   try {
     const { UyeId, Tarih, YoklamaDurum } = yoklamaData;
@@ -28,7 +28,7 @@ async function createYoklama(yoklamaData) {
   }
 }
 
-// Belirli bir yoklamayı silmek
+// Belirli bir yoklamayı silme
 async function deleteYoklama(YoklamaId) {
   try {
     const silinenKayit = await db('Yoklama')
@@ -47,7 +47,7 @@ async function deleteYoklama(YoklamaId) {
   }
 }
 
-// Yoklama güncellemek
+// Yoklama güncelleme
 async function updateYoklama(YoklamaId, yoklamaData) {
   try {
     const { UyeId, Tarih, YoklamaDurum } = yoklamaData;
@@ -72,7 +72,7 @@ async function updateYoklama(YoklamaId, yoklamaData) {
   }
 }
 
-// Tüm yoklamaları almak
+// Tüm yoklamaları alma
 async function getAllYoklamalar() {
   try {
     return await db('Yoklama').select('*');
@@ -82,7 +82,7 @@ async function getAllYoklamalar() {
   }
 }
 
-// Belirli bir yoklamayı almak
+// Belirli bir yoklamayı alma
 async function getYoklamaById(YoklamaId) {
   try {
     const yoklama = await db('Yoklama').where('YoklamaId', YoklamaId).first();

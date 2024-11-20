@@ -2,11 +2,11 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('TokenBlacklist', function(table) {
-        table.string('token').primary(); // Token'ı birincil anahtar olarak ayarlayın
-        table.timestamp('created_at').defaultTo(knex.fn.now()); // Oluşturulma tarihi
+        table.string('token').primary();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     });
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('TokenBlacklist'); // Tabloyu geri alma işlemi
+    return knex.schema.dropTableIfExists('TokenBlacklist'); 
 };

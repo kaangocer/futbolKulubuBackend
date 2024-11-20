@@ -4,11 +4,11 @@
  */
 exports.up = function (knex) {
     return knex.schema.createTable("Formalar", (table) => {
-      table.increments("FormaId").primary(); // Otomatik artan ID
-      table.integer("UyeId").unsigned().references("UyeId").inTable("Uyeler"); // Üyeler tablosuyla ilişki
-      table.string("FormaTipi").notNullable(); // Forma tipi
-      table.string("FormaDurum").notNullable(); // Forma durumu
-      table.timestamp("VerilmeTarihi"); // Verilme tarihi
+      table.increments("FormaId").primary(); 
+      table.integer("UyeId").unsigned().references("UyeId").inTable("Uyeler"); 
+      table.string("FormaTipi").notNullable(); 
+      table.string("FormaDurum").notNullable(); 
+      table.timestamp("VerilmeTarihi"); 
     });
   };
   
@@ -17,6 +17,6 @@ exports.up = function (knex) {
    * @returns { Promise<void> }
    */
   exports.down = function (knex) {
-    return knex.schema.dropTableIfExists("Formalar"); // Geri alma işlemi
+    return knex.schema.dropTableIfExists("Formalar"); 
   };
   

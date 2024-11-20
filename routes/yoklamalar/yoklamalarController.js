@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const yoklamalarService = require('./yoklamalarService');
 
-// Yeni bir yoklama eklemek için endpoint
+// Yeni yoklama ekle
 router.post('/', async (req, res) => {
   try {
     const yeniYoklama = await yoklamalarService.createYoklama(req.body);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Belirli bir yoklamayı silmek için endpoint
+// Belirli bir yoklamayı sil
 router.delete('/:YoklamaId', async (req, res) => {
   try {
     const { YoklamaId } = req.params;
@@ -25,7 +25,7 @@ router.delete('/:YoklamaId', async (req, res) => {
   }
 });
 
-// Yoklama güncellemek için endpoint
+// Yoklama güncelleme
 router.put('/:YoklamaId', async (req, res) => {
   try {
     const { YoklamaId } = req.params;
@@ -36,7 +36,7 @@ router.put('/:YoklamaId', async (req, res) => {
   }
 });
 
-// Tüm yoklamaları görüntülemek için endpoint
+// Tüm yoklamaları görüntüleme
 router.get('/', async (req, res) => {
   try {
     const yoklamalar = await yoklamalarService.getAllYoklamalar();
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Belirli bir yoklamayı görüntülemek için endpoint
+// Belirli bir yoklamayı görüntüleme
 router.get('/:YoklamaId', async (req, res) => {
   try {
     const { YoklamaId } = req.params;

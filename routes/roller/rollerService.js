@@ -4,7 +4,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-// Yeni bir rol eklemek
+// Yeni bir rol ekle
 async function createRole(roleData) {
   try {
     const { RolAdi, Yetkiler, Aciklama } = roleData;
@@ -28,7 +28,7 @@ async function createRole(roleData) {
   }
 }
 
-// Belirli bir rol kaydını silmek
+// Belirli bir rol kaydını silme
 async function deleteRole(RolId) {
   try {
     const silinenKayit = await db('Roller')

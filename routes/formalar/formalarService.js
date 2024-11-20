@@ -1,11 +1,11 @@
 // routes/formalar/formalarService.js
 
 const knex = require('knex');
-const config = require('../../knexfile'); // knexfile.js dosyasını içe aktarma
-const db = knex(config.development); // development ayarını kullan
- // Veritabanı bağlantısı
+const config = require('../../knexfile'); 
+const db = knex(config.development); 
 
-// Yeni bir forma kaydı ekleme
+
+// Ekle
 async function createForma(formaData) {
   try {
     const { UyeId, FormaTipi, FormaDurum, VerilmeTarihi, Boyut } = formaData;
@@ -23,7 +23,7 @@ async function createForma(formaData) {
         VerilmeTarihi,
         Boyut
       })
-      .returning(['FormaId']);  // FormaId'yi array formatında döndür
+      .returning(['FormaId']);  // dizi olarak döndür
 
     console.log('Inserted Forma:', insertedForma);  // FormaId dönen değeri inceleyelim
 
@@ -67,7 +67,7 @@ async function updateForma(FormaId, yeniVeri) {
         VerilmeTarihi,
         Boyut
       })
-      .returning('*');  // Güncellenen tüm veriyi döndür
+      .returning('*');  // Güncellenen veriyi döndür
 
     if (!updatedForma) {
       throw new Error('Güncellenecek forma bulunamadı.');
@@ -82,23 +82,23 @@ async function updateForma(FormaId, yeniVeri) {
 
 module.exports = {
   createForma,
-  updateForma, // yeni eklenen güncelleme fonksiyonunu dışa aktar
+  updateForma, 
 };
 
 
-// Belirli bir forma kaydını silme
+// Id'ye göre silme
 async function deleteForma(FormaId) {
   try {
     const silinenKayit = await db('Formalar')
       .where('FormaId', FormaId)
       .del()
-      .returning('*');  // Silinen kaydın tüm bilgilerini döndür
+      .returning('*');  // Silinen kaydı döndür
 
     if (!silinenKayit.length) {
       throw new Error('Silinecek forma bulunamadı.');
     }
 
-    return silinenKayit[0]; // Silinen kaydı döndür
+    return silinenKayit[0]; 
   } catch (error) {
     console.error('Forma silinirken hata oluştu:', error);
     throw error;
@@ -108,11 +108,11 @@ async function deleteForma(FormaId) {
 module.exports = {
   createForma,
   updateForma,
-  deleteForma, // yeni eklenen silme fonksiyonunu dışa aktar
+  deleteForma, 
 };
 
 
-// Tüm formaları listelemek
+// Hepsini listele
 async function getAllFormalar() {
   try {
     const formalar = await db('Formalar').select('*');
@@ -127,15 +127,15 @@ module.exports = {
   createForma,
   updateForma,
   deleteForma,
-  getAllFormalar, // yeni eklenen listeleme fonksiyonunu dışa aktar
+  getAllFormalar, 
 };
 
 
-// Belirli bir üyeye ait formaları listelemek
+// Id'ye göre listele
 async function getFormalarByUyeId(UyeId) {
   try {
     const formalar = await db('Formalar')
-      .where({ UyeId }) // UyeId'ye göre filtreleme yap
+      .where({ UyeId }) // UyeId'ye göre filtrele
       .select('*');
     return formalar;
   } catch (error) {
@@ -149,5 +149,5 @@ module.exports = {
   updateForma,
   deleteForma,
   getAllFormalar,
-  getFormalarByUyeId, // yeni eklenen fonksiyonu dışa aktar
+  getFormalarByUyeId, 
 };

@@ -3,7 +3,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-// Yeni bir kullanıcı eklemek
+// Yeni bir kullanıcı ekle
 async function createUser(userData) {
   try {
       const { Email, Password, RolId } = userData;

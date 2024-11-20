@@ -4,7 +4,7 @@
  */
 exports.up = function (knex) {
     return knex.schema.alterTable("Formalar", (table) => {
-      table.string("Boyut").notNullable(); // Forma boyutu
+      table.string("Boyut").notNullable(); 
     });
   };
   
@@ -14,6 +14,6 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
     return knex.schema.alterTable("Formalar", (table) => {
-      table.dropColumn("Boyut"); // Boyut sütununu kaldır
+      table.dropColumn("Boyut"); 
     });
   };

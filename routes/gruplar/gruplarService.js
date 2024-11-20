@@ -25,7 +25,7 @@ async function createGrup(grupData) {
   }
 }
 
-// Bir grup silmek
+// Bir grup sil
 async function deleteGrup(grupId) {
   try {
     const deletedCount = await db('Gruplar')
