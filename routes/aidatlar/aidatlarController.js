@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const aidatlarService = require('./aidatlarService');
 
-// Tüm aidatları görüntüleme
+// ekle
 router.post('/', async (req, res) => {
     try {
         const yeniAidat = await aidatlarService.createAidat(req.body);

@@ -30,7 +30,9 @@ async function createAidat(aidatData) {
 // Tüm aidatları görüntüleme
 async function getAllAidat() {
     try {
-        return await db('Aidat').select('*');
+        return await db('Aidat')
+            .join('Uyeler', 'Aidat.UyeId', 'Uyeler.UyeId')  // Uyeler tablosu ile join yapıyoruz
+            .select('Aidat.*', 'Uyeler.Ad', 'Uyeler.SoyAd', 'Uyeler.TcNo');  // Aidat ile birlikte üye bilgilerini seçiyoruz
     } catch (error) {
         console.error('Aidatlar alınırken hata oluştu:', error);
         throw error;
@@ -40,13 +42,16 @@ async function getAllAidat() {
 // Belirli bir aidatı görüntüleme
 async function getAidatById(AidatId) {
     try {
-        const aidat = await db('Aidat').where({ AidatId }).first();
+        const aidat = await db('Aidat')
+            .join('Uyeler', 'Aidat.UyeId', 'Uyeler.UyeId')  // Uyeler tablosu ile join yapıyoruz
+            .where('Aidat.AidatId', AidatId)  // AidatId'ye göre arama yapıyoruz
+            .select('Aidat.*', 'Uyeler.Ad', 'Uyeler.SoyAd', 'Uyeler.TcNo');  // Aidat ile birlikte üye bilgilerini seçiyoruz
 
-        if (!aidat) {
+        if (!aidat.length) {
             throw new Error('Aidat bulunamadı.');
         }
 
-        return aidat;
+        return aidat[0];
     } catch (error) {
         console.error('Aidat alınırken hata oluştu:', error);
         throw error;

@@ -8,9 +8,12 @@ const db = knex(config.development);
 // Ekle
 async function createForma(formaData) {
   try {
-    const { UyeId, FormaTipi, FormaDurum, VerilmeTarihi, Boyut } = formaData;
+    const { UyeId,  FormaDurum, BoyutId } = formaData;
 
-    if (!UyeId || !FormaTipi || !FormaDurum || !Boyut) {
+    if (!UyeId || !FormaDurum || !BoyutId) {
+      
+        console.log(UyeId, FormaDurum, BoyutId);
+      
       throw new Error('Gerekli alanlar eksik.');
     }
 
@@ -18,14 +21,14 @@ async function createForma(formaData) {
     const [insertedForma] = await db('Formalar')
       .insert({
         UyeId,
-        FormaTipi,
+        FormaTipId: 1,
         FormaDurum,
-        VerilmeTarihi,
-        Boyut
+        VerilmeTarihi: new Date(),
+        BoyutId  // Boyut yerine BoyutId
       })
       .returning(['FormaId']);  // dizi olarak döndür
 
-    console.log('Inserted Forma:', insertedForma);  // FormaId dönen değeri inceleyelim
+    
 
     // yeniFormaId'nin gerçekten bir sayı olduğundan emin ol
     const yeniFormaId = insertedForma?.FormaId;
@@ -46,26 +49,20 @@ async function createForma(formaData) {
 }
 
 
-
-
-module.exports = {
-  createForma,
-};
-
 // Yeni bir forma kaydını güncelleme
 async function updateForma(FormaId, yeniVeri) {
   try {
-    const { UyeId, FormaTipi, FormaDurum, VerilmeTarihi, Boyut } = yeniVeri;
+    const { UyeId, FormaTipId, FormaDurum, VerilmeTarihi, BoyutId } = yeniVeri;
 
     // Güncellenmiş forma kaydı
     const [updatedForma] = await db('Formalar')
       .where('FormaId', FormaId)
       .update({
         UyeId,
-        FormaTipi,
+        FormaTipId,  // FormaTipi yerine FormaTipId
         FormaDurum,
         VerilmeTarihi,
-        Boyut
+        BoyutId  // Boyut yerine BoyutId
       })
       .returning('*');  // Güncellenen veriyi döndür
 
@@ -79,11 +76,6 @@ async function updateForma(FormaId, yeniVeri) {
     throw error;
   }
 }
-
-module.exports = {
-  createForma,
-  updateForma, 
-};
 
 
 // Id'ye göre silme
@@ -105,17 +97,14 @@ async function deleteForma(FormaId) {
   }
 }
 
-module.exports = {
-  createForma,
-  updateForma,
-  deleteForma, 
-};
 
-
-// Hepsini listele
 async function getAllFormalar() {
   try {
-    const formalar = await db('Formalar').select('*');
+    const formalar = await db('Formalar')
+      .join('Uyeler', 'Formalar.UyeId', '=', 'Uyeler.UyeId') // UyeId ile Uyeler tablosunu birleştir
+      .join('FormaTipleri', 'Formalar.FormaTipId', '=', 'FormaTipleri.FormaTipId') // FormaTipId ile FormaTipleri tablosunu birleştir
+      .join('Boyutlar', 'Formalar.BoyutId', '=', 'Boyutlar.BoyutId') // BoyutId ile Boyutlar tablosunu birleştir
+      .select('Formalar.*', 'Uyeler.Ad', 'Uyeler.SoyAd', 'Uyeler.TcNo', 'FormaTipleri.FormaTipi', 'Boyutlar.Boyut'); // Formalar, Uyeler, FormaTipleri ve Boyutlar tablosundan gerekli alanları seç
     return formalar;
   } catch (error) {
     console.error('Formalar listelenirken hata oluştu:', error);
@@ -123,31 +112,41 @@ async function getAllFormalar() {
   }
 }
 
-module.exports = {
-  createForma,
-  updateForma,
-  deleteForma,
-  getAllFormalar, 
-};
 
-
-// Id'ye göre listele
-async function getFormalarByUyeId(UyeId) {
+// Id'ye göre bir forma ve üye bilgilerini getir
+async function getFormaById(FormaId) {
   try {
-    const formalar = await db('Formalar')
-      .where({ UyeId }) // UyeId'ye göre filtrele
-      .select('*');
-    return formalar;
+    const forma = await db('Formalar')
+      .join('Uyeler', 'Formalar.UyeId', '=', 'Uyeler.UyeId') // Formayı üye bilgileriyle birleştir
+      .join('FormaTipleri', 'Formalar.FormaTipId', '=', 'FormaTipleri.FormaTipId') // FormaTipi bilgilerini getir
+      .join('Boyutlar', 'Formalar.BoyutId', '=', 'Boyutlar.BoyutId') // Boyut bilgilerini getir
+      .select(
+        'Formalar.*',  // Formaya ait tüm sütunlar
+        'Uyeler.Ad',  // Üyenin adı
+        'Uyeler.SoyAd', // Üyenin soyadı
+        'Uyeler.TcNo', // Üyenin TC numarası
+        'FormaTipleri.FormaTipi', // Forma tipi bilgisi
+        'Boyutlar.Boyut' // Boyut bilgisi
+      )
+      .where('Formalar.FormaId', FormaId) // FormaId'ye göre filtrele
+      .first(); // Tek bir kayıt döndür
+
+    if (!forma) {
+      throw new Error(`Forma ${FormaId} bulunamadı.`);
+    }
+
+    return forma;
   } catch (error) {
-    console.error(`Üye ${UyeId} formaları listelenirken hata oluştu:`, error);
+    console.error(`Forma ${FormaId} alınırken hata oluştu:`, error);
     throw error;
   }
 }
+
 
 module.exports = {
   createForma,
   updateForma,
   deleteForma,
   getAllFormalar,
-  getFormalarByUyeId, 
+  getFormaById, 
 };

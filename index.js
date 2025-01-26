@@ -13,33 +13,33 @@ const checkBlacklist = require('./middleware/checkBlacklist'); // Blacklist kont
 
 
 const formaRoutes = require("./routes/formalar/index"); 
-app.use("/formalar", authenticateToken,checkBlacklist,formaRoutes); 
+app.use("/formalar", formaRoutes); 
 
 
 const grupRoutes = require("./routes/gruplar/index");
-app.use("/gruplar", authenticateToken, checkBlacklist, grupRoutes); 
+app.use("/gruplar",  grupRoutes); 
 
 
 const rollerRoutes = require("./routes/roller/index");
-app.use("/roller", authenticateToken, checkBlacklist, rollerRoutes); 
+app.use("/roller",  rollerRoutes); 
 
 
 const kullanicilarRoutes = require("./routes/kullanicilar/index");
-app.use("/kullanicilar", authenticateToken, checkBlacklist, kullanicilarRoutes); 
+app.use("/kullanicilar",  kullanicilarRoutes); 
 
 
 const yoklamaRoutes = require("./routes/yoklamalar/index");
-app.use("/yoklamalar", authenticateToken, checkBlacklist, yoklamaRoutes); 
+app.use("/yoklamalar",  yoklamaRoutes); 
 
 
 const aidatlarRoutes = require("./routes/aidatlar/index");
-app.use("/aidatlar", authenticateToken, checkBlacklist, aidatlarRoutes); 
+app.use("/aidatlar",  aidatlarRoutes); 
 
 const uyelerRoutes = require("./routes/uyeler/index");
-app.use("/uyeler", authenticateToken, checkBlacklist, uyelerRoutes); 
+app.use("/uyeler", uyelerRoutes); 
 
 const formaStokRoutes = require("./routes/formaStok/index");
-app.use("/formaStok", authenticateToken, checkBlacklist, formaStokRoutes); 
+app.use("/formaStok", formaStokRoutes); 
 
 const loginRouter = require("./routes/loginIslemleri/index");
 app.use("/login", loginRouter);

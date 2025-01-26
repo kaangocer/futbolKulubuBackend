@@ -35,14 +35,15 @@ router.get('/:StokId', async (req, res) => {
     }
 });
 
-// Bir forma güncelle
-router.put('/:StokId', async (req, res) => {
+// API rotası, PUT metodunu kullanarak gelen veriyi günceller
+router.put('/guncelle', async (req, res) => {
     try {
-        const { StokId } = req.params;
-        const updatedStok = await formaStokService.updateFormaStok(StokId, req.body);
-        res.status(200).json(updatedStok);
+        const stokDataList = req.body; // Frontend'den gelen stok verisi
+        const updatedStoklar = await formaStokService.updateFormaStok(stokDataList);
+        res.status(200).json({ updatedStoklar });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Toplu güncelleme sırasında hata oluştu:', error);
+        res.status(500).json({ error: 'Bir hata oluştu' });
     }
 });
 
@@ -56,5 +57,11 @@ router.delete('/:StokId', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+
+
+
+
 
 module.exports = router;

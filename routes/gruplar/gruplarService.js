@@ -43,7 +43,59 @@ async function deleteGrup(grupId) {
   }
 }
 
+// Tüm grupları görüntüle
+async function getGruplar() {
+  try {
+    const gruplar = await db('Gruplar').select('GrupId', 'GrupAdi', 'GrupTipi');
+    return gruplar;
+  } catch (error) {
+    console.error('Gruplar görüntülenirken hata oluştu:', error);
+    throw error;
+  }
+}
+
+const updateGrup = async (grupId, grupData) => {
+  try {
+    // Veritabanında belirtilen grupId'ye sahip grubu güncelliyoruz
+    const [updatedGrup] = await db('Gruplar')
+      .where('GrupId', grupId)
+      .update(grupData)
+      .returning('*'); // Güncellenen veriyi geri alıyoruz
+
+    if (!updatedGrup) {
+      throw new Error('Grup bulunamadı veya güncellenemedi');
+    }
+
+    return updatedGrup; // Güncellenmiş grubu döndürüyoruz
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
+// Belirli bir grubu görüntüle
+async function getGrup(grupId) {
+  try {
+    const grup = await db('Gruplar')
+      .where('GrupId', grupId)
+      .select('GrupId', 'GrupAdi', 'GrupTipi')
+      .first();
+
+    if (!grup) {
+      throw new Error('Grup bulunamadı.');
+    }
+
+    return grup;
+  } catch (error) {
+    console.error('Grup görüntülenirken hata oluştu:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   createGrup,
   deleteGrup,
+  getGruplar,
+  getGrup,
+  updateGrup
 };

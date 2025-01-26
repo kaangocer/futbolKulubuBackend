@@ -57,18 +57,25 @@ router.get('/', async (req, res) => {
 });
 
 
-// Belirli listele
-router.get('/uye/:UyeId', async (req, res) => {
+// Belirli FormaId'ye göre forma getir
+router.get('/:FormaId', async (req, res) => {
   try {
-    const { UyeId } = req.params;
-    const formalar = await formalarService.getFormalarByUyeId(UyeId);
-    
-    if (formalar.length === 0) {
-      return res.status(404).json({ message: 'Bu üyeye ait forma bulunamadı.' });
-    }
+    const { FormaId } = req.params;
 
-    res.status(200).json(formalar);
+    // Servis katmanından veri al
+    const forma = await formalarService.getFormaById(FormaId);
+
+    // Forma başarıyla bulunduysa yanıtı gönder
+    res.status(200).json(forma);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(`Forma ${req.params.FormaId} alınırken hata oluştu:`, error);
+
+    // Hata durumunda genel hata yanıtı
+    res.status(500).json({ 
+      message: `Forma ${req.params.FormaId} alınırken bir hata oluştu.`,
+      error: error.message 
+    });
   }
 });
+
+

@@ -7,14 +7,16 @@ const db = knex(config.development);
 // Yeni bir forma stok eklemek
 async function createFormaStok(stokData) {
     try {
-        const { FormaId, ToplamAdet, TeslimEdilen, KalanAdet } = stokData;
+        const { ToplamAdet, TeslimEdilen, KalanAdet,FormaTipId, BoyutId } = stokData;
 
         const [insertedStok] = await db('FormaStok')
             .insert({
-                FormaId,
+                
                 ToplamAdet,
                 TeslimEdilen,
-                KalanAdet
+                KalanAdet,
+                FormaTipId,
+            BoyutId
             })
             .returning('*');
 
@@ -25,15 +27,44 @@ async function createFormaStok(stokData) {
     }
 }
 
-// Tüm forma stoklarını görüntülemek
 async function getAllFormaStok() {
     try {
-        return await db('FormaStok').select('*');
+        // Tüm boyutlar için kalan adetlerin toplamını alıyoruz
+        const stoklar = await db('FormaStok')
+            .join('FormaTipleri', 'FormaStok.FormaTipId', '=', 'FormaTipleri.FormaTipId') // FormaTipleri tablosu ile JOIN
+            .join('Boyutlar', 'FormaStok.BoyutId', '=', 'Boyutlar.BoyutId') // Boyutlar tablosu ile JOIN
+            .select(
+                'FormaStok.StokId',
+                'FormaStok.ToplamAdet',
+                'FormaStok.TeslimEdilen',
+                'FormaStok.KalanAdet',
+                'FormaStok.FormaTipId',
+                'FormaStok.BoyutId',
+                'FormaTipleri.FormaTipi',
+                'Boyutlar.Boyut'
+            );
+
+        // Boyutlara göre kalan adetlerin toplamını alıyoruz
+        const toplamAdetler = await db('FormaStok')
+            .join('Boyutlar', 'FormaStok.BoyutId', '=', 'Boyutlar.BoyutId')
+            .select('Boyutlar.Boyut')
+            .sum('FormaStok.KalanAdet as toplamKalanAdet') // KalanAdet'in toplamını alıyoruz
+            .groupBy('Boyutlar.Boyut'); // Her boyut için grup oluşturuyoruz
+
+        // toplamAdetler'i nesneye dönüştürmek için:
+        const toplamAdetlerMap = toplamAdetler.reduce((acc, item) => {
+            acc[item.Boyut] = item.toplamKalanAdet;
+            return acc;
+        }, {});
+
+        return { stoklar, toplamAdetler: toplamAdetlerMap };
     } catch (error) {
         console.error('Forma stokları alınırken hata oluştu:', error);
         throw error;
     }
 }
+
+
 
 // Belirli bir forma stokunu görüntülemek
 async function getFormaStokById(StokId) {
@@ -50,25 +81,70 @@ async function getFormaStokById(StokId) {
         throw error;
     }
 }
-
-// Forma stokunu güncellemek
-async function updateFormaStok(StokId, stokData) {
+//Güncelle
+async function updateFormaStok(stokDataList) {
     try {
-        const updatedStok = await db('FormaStok')
-            .where({ StokId })
-            .update(stokData)
-            .returning('*');
+        const updatedStoklar = [];
 
-        if (!updatedStok.length) {
-            throw new Error('Güncellenecek forma stoku bulunamadı.');
+        // Boyut adı - BoyutId eşlemesi
+        const boyutEslestirme = {
+            '1': 1,
+            '2': 2,
+            '3': 3,
+            '4': 4,
+            'XS': 5,
+            'S': 6,
+            'M': 7,
+            'L': 8,
+            'XL': 9,
+            'XXL': 10
+        };
+
+        // Forma tipi - FormaTipId eşlemesi
+        const formaTipEslestirme = {
+            'YAZLIK': 1,
+            'KISLIK': 2,
+            'KALYAZLIK': 3,
+            'KALKISLIK': 4
+        };
+
+        // Her bir stok için güncelleme işlemi
+        for (const stokData of stokDataList) {
+            const { FormaTipi, Boyut, ToplamAdet, TeslimEdilen, KalanAdet } = stokData;
+
+            // FormaTipi ve Boyut'a göre FormaTipId ve BoyutId'yi alıyoruz
+            const FormaTipId = formaTipEslestirme[FormaTipi];
+            const BoyutId = boyutEslestirme[Boyut];
+
+            if (!FormaTipId || !BoyutId) {
+                throw new Error(`Geçersiz FormaTipi veya Boyut: ${FormaTipi}, ${Boyut}`);
+            }
+
+            // StokId ve BoyutId'ye göre kalan adeti güncelleme
+            const [updatedStok] = await db('FormaStok')
+                .where({ FormaTipId, BoyutId }) // Hem FormaTipId hem BoyutId'yi kontrol ediyoruz
+                .update({
+                    ToplamAdet,
+                    TeslimEdilen,
+                    KalanAdet
+                })
+                .returning('*'); // Güncellenen stok verisini döndürüyoruz
+
+            if (updatedStok) {
+                updatedStoklar.push(updatedStok);
+            }
         }
 
-        return updatedStok[0];
+        // Güncellenmiş stokları döndür
+        return updatedStoklar;
     } catch (error) {
-        console.error('Forma stoku güncellenirken hata oluştu:', error);
+        console.error('Forma stokları güncellenirken hata oluştu:', error);
         throw error;
     }
 }
+
+
+
 
 // Forma stokunu silmek
 async function deleteFormaStok(StokId) {

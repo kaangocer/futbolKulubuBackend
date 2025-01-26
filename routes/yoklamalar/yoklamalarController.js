@@ -57,4 +57,17 @@ router.get('/:YoklamaId', async (req, res) => {
   }
 });
 
+
+router.get('/tarih/:tarih', async (req, res) => {
+  try {
+    const yoklamalar = await yoklamalarService.getYoklamalarByTarih(req.params.tarih);
+    res.json(yoklamalar);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
 module.exports = router;
