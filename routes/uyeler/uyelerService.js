@@ -81,16 +81,25 @@ async function updateUye(UyeId, uyeData) {
 // Üyeyi silme
 async function deleteUye(UyeId) {
     try {
-        const silinenKayit = await db('Uyeler')
-            .where({ UyeId })
-            .del()
-            .returning('*');
+        // Transaction başlat
+        await db.transaction(async (trx) => {
+            // Önce üyeye ait tüm ilişkili kayıtları sil
+            await trx('Yoklama').where({ UyeId }).del();
+            await trx('Aidat').where({ UyeId }).del();
+            await trx('Formalar').where({ UyeId }).del();
+            
+            // En son üyeyi sil
+            const silinenUye = await trx('Uyeler')
+                .where({ UyeId })
+                .del()
+                .returning('*');
 
-        if (!silinenKayit.length) {
-            throw new Error('Silinecek üye bulunamadı.');
-        }
+            if (!silinenUye.length) {
+                throw new Error('Silinecek üye bulunamadı.');
+            }
 
-        return silinenKayit[0];
+            return silinenUye[0];
+        });
     } catch (error) {
         console.error('Üye silinirken hata oluştu:', error);
         throw error;
